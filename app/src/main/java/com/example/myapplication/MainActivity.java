@@ -1,7 +1,5 @@
 package com.example.myapplication;
 
-import android.graphics.Color;
-import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textView;
     private Button yesBtn;
+    private Button noBtn;
 
     private Question[] questions = new Question[] {
             new Question(R.string.question1,true), //0
@@ -30,8 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
         textView = findViewById(R.id.textView);
         yesBtn = findViewById(R.id.yesBtn);
+        noBtn = findViewById(R.id.noBtn);
 
         textView.setText(questions[questionIndex].getQuestionResId());
+
         yesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,7 +40,19 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,R.string.correct,Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(MainActivity.this,R.string.incorrect,Toast.LENGTH_SHORT).show();
-                questionIndex++;
+                questionIndex=(questionIndex+1)%questions.length;
+                textView.setText(questions[questionIndex].getQuestionResId());
+            }
+        });
+
+        noBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (questions[questionIndex].isAnswerTrue())
+                    Toast.makeText(MainActivity.this,R.string.incorrect,Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(MainActivity.this,R.string.correct,Toast.LENGTH_SHORT).show();
+                questionIndex=(questionIndex+1)%questions.length;
                 textView.setText(questions[questionIndex].getQuestionResId());
             }
         });
